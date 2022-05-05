@@ -1,0 +1,20 @@
+version: "3.7"
+services:    
+  teams:
+    build:
+      context: .
+    image: explabs/potee-registration
+    environment:
+      ADMIN_PASS: ${ADMIN_PASS}
+    ports:
+      - "8080:8080"
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${ADMIN_PASS}
+    ports:
+      - "27017:27017"
