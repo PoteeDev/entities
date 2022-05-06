@@ -3,9 +3,10 @@ services:
   teams:
     build:
       context: .
-    image: explabs/potee-registration
+    image: explabs/potee-team
     environment:
-      ADMIN_PASS: ${ADMIN_PASS}
+      - ADMIN_PASS=$ADMIN_PASS
+      - MONGODB=mongo:27017
     ports:
       - "8080:8080"
 

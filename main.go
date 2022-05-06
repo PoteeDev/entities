@@ -9,8 +9,7 @@ import (
 	"time"
 
 	"github.com/PoteeDev/auth/middleware"
-	"github.com/PoteeDev/team/info"
-	"github.com/PoteeDev/team/registration"
+	"github.com/PoteeDev/team/handlers"
 	"github.com/explabs/ad-ctf-paas-api/database"
 	"github.com/gin-gonic/gin"
 )
@@ -24,9 +23,9 @@ func main() {
 	appAddr := ":" + os.Getenv("PORT")
 	var router = gin.Default()
 
-	router.POST("/team/registration", registration.CreateTeam)
-	router.POST("/team/info", middleware.TokenAuthMiddleware(), info.GetTeamInfo)
-	router.POST("/team/vpn", middleware.TokenAuthMiddleware())
+	router.POST("/registration", handlers.CreateTeam)
+	router.GET("/info", middleware.TokenAuthMiddleware(), handlers.GetTeamInfo)
+	router.POST("/vpn", middleware.TokenAuthMiddleware())
 
 	srv := &http.Server{
 		Addr:    appAddr,

@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY go.mod ./
 COPY go.sum ./
-COPY auth /auth
+# COPY auth /auth
 RUN go mod download
-COPY info .
-COPY registration .
-COPY vpn .
+COPY registration registration
+COPY vpn vpn
+COPY handlers handlers
 COPY main.go main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o /teams .
 
