@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/PoteeDev/auth/auth"
-	"github.com/explabs/ad-ctf-paas-api/database"
+	"github.com/PoteeDev/team/database"
 	"github.com/gin-gonic/gin"
 )
 

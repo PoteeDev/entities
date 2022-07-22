@@ -4,12 +4,43 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
-	"github.com/PoteeDev/team/registration"
-	"github.com/explabs/ad-ctf-paas-api/database"
+	"github.com/PoteeDev/team/database"
+	"github.com/PoteeDev/team/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 )
+
+type Team struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	return string(bytes), err
+}
+
+func (t *Team) WriteTeam(login string) error {
+
+	// ipAddress := generateIp(len(teams) + 1)
+	hash, hashErr := HashPassword(t.Password)
+	if hashErr != nil {
+		return hashErr
+	}
+	dbTeam := &models.Team{
+		ID:        primitive.NewObjectID(),
+		Name:      t.Name,
+		Login:     login,
+		Hash:      hash,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+	return database.AddTeam(dbTeam)
+}
 
 func CreateTeam(c *gin.Context) {
 	// status, err := database.RegistrationStatus()
@@ -21,7 +52,7 @@ func CreateTeam(c *gin.Context) {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"detail": "registration closed"})
 	// 	return
 	// }
-	var team registration.Team
+	var team Team
 	jsonErr := c.BindJSON(&team)
 	if jsonErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": jsonErr.Error()})

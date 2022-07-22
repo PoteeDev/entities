@@ -8,17 +8,18 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/PoteeDev/admin/api/database"
 	"github.com/PoteeDev/auth/middleware"
 	"github.com/PoteeDev/team/handlers"
-	"github.com/explabs/ad-ctf-paas-api/database"
 	"github.com/gin-gonic/gin"
 )
 
-func init() {
-	database.InitMongo()
-}
+// func init() {
+// 	database.ConnectDB()
+// }
 
 func main() {
+	database.ConnectDB()
 
 	appAddr := ":" + os.Getenv("PORT")
 	var router = gin.Default()
