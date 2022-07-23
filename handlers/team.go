@@ -35,6 +35,8 @@ func (t *Team) WriteTeam(login string) error {
 		ID:        primitive.NewObjectID(),
 		Name:      t.Name,
 		Login:     login,
+		Blocked:   false,
+		Visible:   true,
 		Hash:      hash,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),

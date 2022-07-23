@@ -13,6 +13,8 @@ type Team struct {
 	Name      string             `bson:"name"`
 	Login     string             `bson:"login"`
 	Hash      string             `bson:"hash"`
+	Visible   bool               `bson:"visible"`
+	Blocked   bool               `bson: blocked`
 }
 type TeamInfo struct {
 	CreatedAt time.Time `bson:"created_at" json:"created_at"`
