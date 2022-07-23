@@ -7,14 +7,12 @@ import (
 	"github.com/PoteeDev/admin/api/database"
 	"github.com/PoteeDev/team/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func AddTeam(t *models.Team) error {
 	col := database.GetCollection(database.DB, "teams")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	t.ID = primitive.NewObjectID()
 	_, err := col.InsertOne(ctx, t)
 
 	if err != nil {

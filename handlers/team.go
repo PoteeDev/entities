@@ -10,7 +10,6 @@ import (
 	"github.com/PoteeDev/team/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -32,7 +31,6 @@ func (t *Team) WriteTeam(login string) error {
 		return hashErr
 	}
 	dbTeam := &models.Team{
-		ID:        primitive.NewObjectID(),
 		Name:      t.Name,
 		Login:     login,
 		Blocked:   false,
