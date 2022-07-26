@@ -1,10 +1,11 @@
-module github.com/PoteeDev/team
+module github.com/PoteeDev/entities
 
 go 1.18
 
 require (
 	github.com/PoteeDev/admin v0.0.0-20220723131213-1e5fe3ee503e
 	github.com/PoteeDev/auth v0.0.0-20220722133511-77c35bad30fd
+	github.com/PoteeDev/team v0.0.0-20220723130907-b12176f7cfa7
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gosimple/slug v1.12.0
 	go.mongodb.org/mongo-driver v1.10.0
