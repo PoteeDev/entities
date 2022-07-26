@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Team struct {
+type Entity struct {
 	CreatedAt time.Time `bson:"created_at"`
 	UpdatedAt time.Time `bson:"updated_at"`
 	Name      string    `bson:"name"`
@@ -13,7 +13,7 @@ type Team struct {
 	Visible   bool      `bson:"visible"`
 	Blocked   bool      `bson:"blocked"`
 }
-type TeamInfo struct {
+type EntityInfo struct {
 	CreatedAt time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
 	Name      string    `bson:"name" json:"name"`

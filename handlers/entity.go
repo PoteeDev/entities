@@ -6,14 +6,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PoteeDev/team/database"
-	"github.com/PoteeDev/team/models"
+	"github.com/PoteeDev/entities/database"
+	"github.com/PoteeDev/entities/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Team struct {
+type Entity struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
 }
@@ -23,26 +24,26 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func (t *Team) WriteTeam(login string) error {
+func (t *Entity) WriteEntity(login string) error {
 
 	// ipAddress := generateIp(len(teams) + 1)
 	hash, hashErr := HashPassword(t.Password)
 	if hashErr != nil {
 		return hashErr
 	}
-	dbTeam := &models.Team{
-		Name:      t.Name,
-		Login:     login,
-		Blocked:   false,
-		Visible:   true,
-		Hash:      hash,
+	dbEntity := &models.Entity{
+		ID:    primitive.NewObjectID(),
+		Name:  t.Name,
+		Login: login,
+		Hash:  hash,
+
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	return database.AddTeam(dbTeam)
+	return database.AddEntity(dbEntity)
 }
 
-func CreateTeam(c *gin.Context) {
+func CreateEntity(c *gin.Context) {
 	// status, err := database.RegistrationStatus()
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"detail": err})
@@ -52,39 +53,39 @@ func CreateTeam(c *gin.Context) {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"detail": "registration closed"})
 	// 	return
 	// }
-	var team Team
-	jsonErr := c.BindJSON(&team)
+	var entity Entity
+	jsonErr := c.BindJSON(&entity)
 	if jsonErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": jsonErr.Error()})
 		return
 	}
-	// create slug name for team
-	login := slug.Make(team.Name)
+	// create slug name for entity
+	login := slug.Make(entity.Name)
 	// todo: change name policy in vpn service and remove this line
 	login = strings.Replace(login, "-", "_", -1)
 
 	// check if user already exists
 	// todo: create function in mongo to check exists usern, not find
-	dbTeam, err := database.GetTeam(login)
-	fmt.Println(dbTeam, err)
-	if dbTeam != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"detail": "team already exists"})
+	dbEntity, err := database.GetEntity(login)
+	fmt.Println(dbEntity, err)
+	if dbEntity != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"detail": "entity already exists"})
 		return
 	}
 	// write user to database
-	if writeErr := team.WriteTeam(login); writeErr != nil {
+	if writeErr := entity.WriteEntity(login); writeErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": writeErr.Error()})
 	}
 
 	// generate vpn config
-	// vpnErr := vpn.CreateVpnCLient(login, team.Password).CreateConfig()
+	// vpnErr := vpn.CreateVpnCLient(login, entity.Password).CreateConfig()
 	// if vpnErr != nil {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"detail": vpnErr.Error()})
 	// 	return
 	// }
-	// if all ok - return message and team login
+	// if all ok - return message and entity login
 	c.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("The team %s created", team.Name),
+		"message": fmt.Sprintf("The entity %s created", entity.Name),
 		"login":   login,
 	})
 }

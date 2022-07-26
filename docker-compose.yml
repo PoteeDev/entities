@@ -1,9 +1,9 @@
 version: "3.7"
-services:    
-  teams:
+services:
+  entities:
     build:
       context: .
-    image: explabs/potee-team
+    image: explabs/potee-entities
     environment:
       - ADMIN_PASS=$ADMIN_PASS
       - MONGODB=mongo:27017

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/PoteeDev/auth/auth"
-	"github.com/PoteeDev/team/vpn"
+	"github.com/PoteeDev/entities/vpn"
 	"github.com/gin-gonic/gin"
 )
 
