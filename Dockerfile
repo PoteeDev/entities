@@ -7,13 +7,13 @@ COPY go.sum .
 # COPY auth /auth
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o /teams .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o /entities .
 
 ##
 ## Deploy
 ##
 FROM alpine
 WORKDIR /
-COPY --from=build /teams .
+COPY --from=build /entities .
 ENV PORT=8080
-ENTRYPOINT [ "./teams"]
+ENTRYPOINT [ "./entities"]
