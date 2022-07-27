@@ -10,7 +10,7 @@ import (
 
 	"github.com/PoteeDev/admin/api/database"
 	"github.com/PoteeDev/auth/middleware"
-	"github.com/PoteeDev/team/handlers"
+	"github.com/PoteeDev/entities/handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,8 +24,8 @@ func main() {
 	appAddr := ":" + os.Getenv("PORT")
 	var router = gin.Default()
 
-	router.POST("/registration", handlers.CreateTeam)
-	router.GET("/info", middleware.TokenAuthMiddleware(), handlers.GetTeamInfo)
+	router.POST("/registration", handlers.CreateEntity)
+	router.GET("/info", middleware.TokenAuthMiddleware(), handlers.GetEntityInfo)
 	router.POST("/vpn", middleware.TokenAuthMiddleware())
 
 	srv := &http.Server{

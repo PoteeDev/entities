@@ -14,10 +14,10 @@ func GetEntityInfo(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"detail": "unauthorized"})
 		return
 	}
-	team, err := database.GetEntity(metadata.UserId)
+	entity, err := database.GetEntity(metadata.UserId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"team": team})
+	c.JSON(http.StatusOK, gin.H{"entity": entity})
 }

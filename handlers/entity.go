@@ -10,7 +10,6 @@ import (
 	"github.com/PoteeDev/entities/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -32,7 +31,6 @@ func (t *Entity) WriteEntity(login string) error {
 		return hashErr
 	}
 	dbEntity := &models.Entity{
-		ID:    primitive.NewObjectID(),
 		Name:  t.Name,
 		Login: login,
 		Hash:  hash,
