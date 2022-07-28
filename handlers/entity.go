@@ -31,10 +31,10 @@ func (t *Entity) WriteEntity(login string) error {
 		return hashErr
 	}
 	dbEntity := &models.Entity{
-		Name:  t.Name,
-		Login: login,
-		Hash:  hash,
-
+		Name:      t.Name,
+		Login:     login,
+		Hash:      hash,
+		Visible:   true,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
