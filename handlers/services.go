@@ -18,7 +18,7 @@ import (
 type Service struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Reputation  int    `json:reputation`
+	Reputation  int    `json:"reputation"`
 	Lost        int    `json:"lost"`
 	Gained      int    `json:"gained"`
 }
