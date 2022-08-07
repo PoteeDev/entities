@@ -9,13 +9,14 @@ import (
 	"github.com/PoteeDev/entities/database"
 	"github.com/PoteeDev/entities/models"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator"
 	"github.com/gosimple/slug"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Entity struct {
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	Name     string `json:"name" validate:"required,min=3,max=30"`
+	Password string `json:"password" validate:"required,min=8,max=100"`
 }
 
 func HashPassword(password string) (string, error) {
@@ -55,6 +56,13 @@ func CreateEntity(c *gin.Context) {
 	jsonErr := c.BindJSON(&entity)
 	if jsonErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": jsonErr.Error()})
+		return
+	}
+	validate := validator.New()
+	if err := validate.Struct(&entity); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"detail": err.Error(),
+		})
 		return
 	}
 	// create slug name for entity
