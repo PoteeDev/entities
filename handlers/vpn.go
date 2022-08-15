@@ -31,7 +31,7 @@ func GenerateVpnConfig(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err})
 		return
 	}
-	if entity.Address == "" {
+	if entity.Subnet == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": "can not generate config"})
 		return
 	}
@@ -43,7 +43,7 @@ func GenerateVpnConfig(c *gin.Context) {
 		return
 	}
 
-	err = vpnClient.AddRoute(entity.Address)
+	err = vpnClient.AddRoute(entity.Subnet)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"detail": err.Error()})
 		return
