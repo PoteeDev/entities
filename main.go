@@ -26,7 +26,8 @@ func main() {
 
 	router.POST("/registration", handlers.CreateEntity)
 	router.GET("/info", middleware.TokenAuthMiddleware(), handlers.GetEntityInfo)
-	router.POST("/vpn", middleware.TokenAuthMiddleware())
+	router.GET("/vpn/generate", middleware.TokenAuthMiddleware(), handlers.GenerateVpnConfig)
+	router.GET("/vpn/config", middleware.TokenAuthMiddleware(), handlers.GetVpnConfig)
 	router.GET("/services", middleware.TokenAuthMiddleware(), handlers.GetServices)
 
 	srv := &http.Server{
