@@ -14,12 +14,12 @@ func (c *VpnClient) AddRoute(subnetAddress string) error {
 	urlAddr := c.VpnService + "api/user/ccd/apply"
 
 	var jsonData = []byte(fmt.Sprintf(`{
-		"User":"naliway",
+		"User":"%s",
 		"ClientAddress":"dynamic",
 		"CustomRoutes":[
 			{"Address":"%s","Mask":"255.255.255.0"}
 			]
-		}`, subnetAddress))
+		}`, c.Login, subnetAddress))
 
 	request, _ := http.NewRequest("POST", urlAddr, bytes.NewBuffer(jsonData))
 	request.Header.Set("Content-Type", "application/json; charset=UTF-8")
