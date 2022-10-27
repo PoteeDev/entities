@@ -33,5 +33,4 @@ func GetEntity(login string) (*models.EntityInfo, error) {
 		return nil, err
 	}
 	return &entity, err
-
 }
