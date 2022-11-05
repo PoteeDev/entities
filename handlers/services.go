@@ -16,11 +16,13 @@ import (
 )
 
 type Service struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Reputation  int    `json:"reputation"`
-	Lost        int    `json:"lost"`
-	Gained      int    `json:"gained"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Reputation  int     `json:"reputation"`
+	Lost        int     `json:"lost"`
+	Gained      int     `json:"gained"`
+	Status      int     `json:"status"`
+	SLA         float64 `json:"sla"`
 }
 
 func GetServices(c *gin.Context) {
@@ -58,12 +60,16 @@ func GetServices(c *gin.Context) {
 			Reputation:  serviceInfo.Reputation,
 			Gained:      0,
 			Lost:        0,
+			SLA:         -1,
+			Status:      -1,
 		}
 		log.Println(scoreboard)
 		if !emtyScore {
 			service.Reputation = scoreboard.Srv[name].Reputation
 			service.Lost = scoreboard.Srv[name].Lost
 			service.Gained = scoreboard.Srv[name].Gained
+			service.Status = scoreboard.Srv[name].Status
+			service.SLA = scoreboard.Srv[name].SLA
 		}
 		services = append(services, service)
 	}
