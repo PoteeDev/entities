@@ -43,11 +43,11 @@ func GetServices(c *gin.Context) {
 		return
 	}
 	scoreCol := database.GetCollection(database.DB, "scoreboard")
-	emtyScore := false
+	emptyScore := false
 	err = scoreCol.FindOne(ctx, bson.M{"id": metadata.UserId}).Decode(&scoreboard)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			emtyScore = true
+			emptyScore = true
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{"detail": err})
 			return
@@ -64,7 +64,7 @@ func GetServices(c *gin.Context) {
 			Status:      -1,
 		}
 		log.Println(scoreboard)
-		if !emtyScore {
+		if !emptyScore {
 			service.Reputation = scoreboard.Srv[name].Reputation
 			service.Lost = scoreboard.Srv[name].Lost
 			service.Gained = scoreboard.Srv[name].Gained
@@ -74,5 +74,5 @@ func GetServices(c *gin.Context) {
 		services = append(services, service)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"services": services})
+	c.JSON(http.StatusOK, gin.H{"services": services, "is_runned": !emptyScore})
 }
