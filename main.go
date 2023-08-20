@@ -23,7 +23,11 @@ func main() {
 
 	appAddr := ":" + os.Getenv("PORT")
 	var router = gin.Default()
-
+	router.GET("/ping", middleware.TokenAuthMiddleware(), func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 	router.POST("/registration", handlers.CreateEntity)
 	router.GET("/info", middleware.TokenAuthMiddleware(), handlers.GetEntityInfo)
 	router.GET("/vpn/generate", middleware.TokenAuthMiddleware(), handlers.GenerateVpnConfig)
