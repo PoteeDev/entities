@@ -23,7 +23,7 @@ func main() {
 
 	appAddr := ":" + os.Getenv("PORT")
 	var router = gin.Default()
-	router.GET("/ping", middleware.TokenAuthMiddleware(), func(c *gin.Context) {
+	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
