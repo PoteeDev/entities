@@ -3,7 +3,8 @@ package vpn
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"net"
 	"net/http"
 )
 
@@ -13,13 +14,18 @@ import (
 func (c *VpnClient) AddRoute(subnetAddress string) error {
 	urlAddr := c.VpnService + "api/user/ccd/apply"
 
+	ip, ipnet, err := net.ParseCIDR(subnetAddress)
+	if err != nil {
+		return err
+	}
+
 	var jsonData = []byte(fmt.Sprintf(`{
 		"User":"%s",
 		"ClientAddress":"dynamic",
 		"CustomRoutes":[
-			{"Address":"%s","Mask":"255.255.255.0"}
+			{"Address":"%s","Mask":"%s"}
 			]
-		}`, c.Login, subnetAddress))
+		}`, c.Login, ip, net.IP(ipnet.Mask).String()))
 
 	request, _ := http.NewRequest("POST", urlAddr, bytes.NewBuffer(jsonData))
 	request.Header.Set("Content-Type", "application/json; charset=UTF-8")
@@ -31,7 +37,7 @@ func (c *VpnClient) AddRoute(subnetAddress string) error {
 	}
 	defer response.Body.Close()
 	if response.Status != "200 OK" {
-		responseData, err := ioutil.ReadAll(response.Body)
+		responseData, err := io.ReadAll(response.Body)
 		if err != nil {
 			return err
 		}
